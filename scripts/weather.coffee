@@ -8,6 +8,8 @@
 # Commands:
 #   hubot weather <city> - Get the weather for a location.
 #   hubot forecast <city> - Get the 3 day forecast for a location.
+#   hubot weather - Get weather in Leipzig, Germany
+#   hubot forecast - Get forecast in Leipzig, Germany
 #
 # Author:
 #   markstory
@@ -92,6 +94,14 @@ module.exports = (robot) ->
     location = msg.match[1]
     lookupAddress(msg, location, lookupWeather)
 
+  robot.respond /weather\s*?/i, (msg) ->
+    location = "Leipzig, Germany"
+    lookupAddress(msg, location, lookupWeather)
+
   robot.respond /forecast(?: me|for|in)?\s(.*)/i, (msg) ->
     location = msg.match[1]
+    lookupAddress(msg, location, lookupForecast)
+
+  robot.respond /forecast\s*?/i, (msg) ->
+    location = "Leipzig, Germany"
     lookupAddress(msg, location, lookupForecast)
