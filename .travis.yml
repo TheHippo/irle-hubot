@@ -1,3 +1,14 @@
 language: node_js
 node_js:
-  - "0.10"
+  - '0.10'
+branches:
+  only:
+    - master
+deploy:
+  provider: heroku
+  api_key:
+    secure: G//cxUfMzr4R73tx9rzq8BiTXvvxyCkmrYTXaTtNxRNc85c5ORFzxneygWJnPZLs4ZqeWHfO/Szy5wFyh8hKr88pDtFHzL5CwSrxpu48X/mKIr9rVQehPik69MVXViLWjGM6kMFI7DvmJ+4nYN28p2tNXWJI9gfJ1gPcxTknGww=
+  app: 
+    master: irle-hubot
+  on:
+    repo: TheHippo/irle-hubot
