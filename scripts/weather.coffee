@@ -14,6 +14,7 @@
 # Author:
 #   markstory
 #   mbmccormick
+#   thehippo
 env = process.env
 
 forecastIoUrl = 'https://api.forecast.io/forecast/' + process.env.HUBOT_FORECAST_API_KEY + '/'
@@ -24,13 +25,14 @@ lookupAddress = (msg, location, cb) ->
     .get() (err, res, body) ->
       try
         body = JSON.parse body
+        address = body.results[0].formatted_address 
         coords = body.results[0].geometry.location
       catch err
         err = "Could not find #{location}"
-        return cb(msg, null, err)
-      cb(msg, coords, err)
+        return cb(msg, null, null, err)
+      cb(msg, coords, address, err)
 
-lookupWeather = (msg, coords, err) ->
+lookupWeather = (msg, coords, address, err) ->
   return msg.send err if err
   return msg.send "You need to set env.HUBOT_FORECAST_API_KEY to get weather data" if not env.HUBOT_FORECAST_API_KEY
 
@@ -45,10 +47,10 @@ lookupWeather = (msg, coords, err) ->
       return msg.send "Could not parse weather data."
     humidity = (current.humidity * 100).toFixed 0
     temperature = getTemp(current.temperature)
-    text = "It is currently #{temperature} #{current.summary}, #{humidity}% humidity"
+    text = "It is currently #{temperature} #{current.summary}, #{humidity}% humidity in #{address}"
     msg.send text
 
-lookupForecast = (msg, coords, err) ->
+lookupForecast = (msg, coords, address, err) ->
   return msg.send err if err
   return msg.send "You need to set env.HUBOT_FORECAST_API_KEY to get weather data" if not env.HUBOT_FORECAST_API_KEY
 
@@ -63,7 +65,7 @@ lookupForecast = (msg, coords, err) ->
       dayAfter = forecast[2]
     catch err
       return msg.send 'Unable to parse forecast data.'
-    text = "The weather for:\n"
+    text = "The weather for #{address}:\n"
 
     appendText = (text, data) ->
       dateToday = new Date(data.time * 1000)
