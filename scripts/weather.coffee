@@ -96,7 +96,7 @@ module.exports = (robot) ->
     location = msg.match[1]
     lookupAddress(msg, location, lookupWeather)
 
-  robot.respond /weather\s*?/i, (msg) ->
+  robot.respond /weather\s*?$/i, (msg) ->
     location = "Leipzig, Germany"
     lookupAddress(msg, location, lookupWeather)
 
@@ -104,6 +104,6 @@ module.exports = (robot) ->
     location = msg.match[1]
     lookupAddress(msg, location, lookupForecast)
 
-  robot.respond /forecast\s*?/i, (msg) ->
+  robot.respond /forecast\s*?$/i, (msg) ->
     location = "Leipzig, Germany"
     lookupAddress(msg, location, lookupForecast)
